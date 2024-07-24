@@ -32,7 +32,7 @@ function SingleSection({
         {title}
       </h3>
       <LogoGrid list={partners} />
-      </section>
+    </section>
   )
 }
 
@@ -40,11 +40,11 @@ export function PartnersSection({ partners, className }: { partners: Partner[], 
   const partnerLogos = partners.map((p) => ({
     name: p.title,
     image: p.field_image_url.uri,
-    type: p.field_special_partner_title,
+    type: p.field_special_partner_title ?? '', // Ensure type is never undefined
     htmlDescription: p.body?.processed,
   }));
 
-  const otherPartners = partnerLogos.filter((p) => p.type === null);
+  const otherPartners = partnerLogos.filter((p) => p.type === '');
 
   interface PartnerMap {
     [type: string]: typeof partnerLogos;
@@ -61,12 +61,16 @@ export function PartnersSection({ partners, className }: { partners: Partner[], 
 
   return (
     <div className={twMerge("flex flex-col gap-12", className)}>
-    <div className="grid grid-cols-1 place-items-center gap-10 lg:grid-cols-2">
-      {order.filter((c)=> typeof partnersMap[c]!== "undefined").map((category) => (
-        <SingleSection key={category} title={category} partners={partnersMap[category]} />
-      ))}
-    </div>
-    <SingleSection title="Partners" partners={otherPartners} />
+      <div className="grid grid-cols-1 place-items-center gap-10 lg:grid-cols-2">
+        {order.filter((category) => partnersMap[category] && partnersMap[category].length > 0).map((category) => (
+          <SingleSection
+            key={category}
+            title={category}
+            partners={partnersMap[category].filter(p => p.type === category)} // Ensure type matches the category
+          />
+        ))}
+      </div>
+      <SingleSection title="Partners" partners={otherPartners} />
     </div>
   );
 }

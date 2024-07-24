@@ -13,12 +13,14 @@ export type Workshop = {
   title: string;
   description: string;
   badge: string;
-  audience?: string[];
+  audience?: string[]; // audience is optional
 };
 
-const WorkshopCard = (data: Workshop) => {
+const WorkshopCard: React.FC<Workshop> = (data) => {
+  // Default to an empty array if audience is undefined
+  const audienceList = data.audience ?? [];
+
   return (
-    
     <Card className="w-full">
       <CardHeader>
         <CardTitle>{data.title}</CardTitle>
@@ -29,11 +31,11 @@ const WorkshopCard = (data: Workshop) => {
         <span className="pl-8">
           <RegisterButton />
         </span>
-        {data.audience?.length > 0 && (
+        {audienceList.length > 0 && (
           <div className="mt-4">
             <h4 className="font-semibold">Target Audience</h4>
             <ul className="mt-2 space-y-1 text-gray-600">
-              {data.audience.map((audienceItem, idx) => (
+              {audienceList.map((audienceItem, idx) => (
                 <li key={idx}>{audienceItem}</li>
               ))}
             </ul>

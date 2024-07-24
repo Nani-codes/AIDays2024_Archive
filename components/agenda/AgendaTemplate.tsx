@@ -5,12 +5,18 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Speaker } from "data/drupal/node--speakers";
 import Link from "next/link";
 import { Popover, PopoverContent, PopoverTrigger } from "components/ui/popover";
-import GoogleSheetsEmbed from "./Shee4tEmbed";
+import GoogleSheetsEmbed from "./SheetEmbed";
 
-const AgendaContext = createContext({
+type AgendaContextType = {
+  selected: string | null;
+  setSelected: (agendaItem: string | null) => void;
+};
+
+const AgendaContext = createContext<AgendaContextType>({
   selected: null,
-  setSelected: (_: any) => null,
+  setSelected: () => null,
 });
+
 const ContextProvider = ({ children }) => {
   const [selected, _setSelected] = useState(null);
   const setSelected = (agendaItem) => {
@@ -194,11 +200,11 @@ function ScheduleItem({
         <div className="mx-auto mb-8 h-px w-48 bg-indigo-500/10" />
       )}
       <ScheduleItemHead
-        speakers={item.speakers}
+        speakers={item.speakers ?? []} // Provide default empty array
         topic={item.topic}
-        badges={item.badges}
-        venue={item.venue}
-        description={item.description}
+        badges={item.badges ?? []} // Provide default empty array
+        venue={item.venue ??""}
+        description={item.description ??""}
       />
       <p className="mt-1 font-mono text-sm text-slate-500">
         <time>{item.startTime}</time>
@@ -212,6 +218,7 @@ function ScheduleItem({
     </li>
   );
 }
+
 
 function MobileSchedule({ children, hidden }) {
   return (
@@ -343,7 +350,7 @@ const Main = ({ data }: { data: Day[] }) => {
 
 const AgendaTemplate = ({
   data,
-  showPopover,
+  showPopover = false, // Provide a default value of false
 }: {
   data: ScheduleData;
   showPopover?: boolean;
@@ -377,5 +384,6 @@ const AgendaTemplate = ({
     </section>
   );
 };
+
 
 export default AgendaTemplate;

@@ -1,8 +1,8 @@
 import { faWikipediaW } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "components/ui/button"
-import Image from "next/image"
-import Link from "next/link"
+import { Button } from "components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 type ExpertProfileProps = {
   name: string;
@@ -22,26 +22,34 @@ export default function ExpertProfile({
   designation,
   description,
   htmlDescription,
-  socials: {  linkedin, wikipedia },
-}:ExpertProfileProps) {
+  socials, // No destructuring here
+}: ExpertProfileProps) {
+  // Destructure inside the function body
+  const linkedin = socials?.linkedin;
+  const wikipedia = socials?.wikipedia;
+
   return (
     <div className="mx-auto max-w-5xl">
       <header className="flex items-center justify-between border-b py-4">
         <h1 className="text-xl font-semibold">PROFILE</h1>
         <div className="flex space-x-4">
-          {linkedin && (<a href={linkedin} target="_blank" rel="noreferrer">
-          <Button className="flex items-center space-x-2" variant="ghost">
-            <LinkedinIcon className="size-4" />
-            <span>LinkedIn</span>
-          </Button>
-          </a>)}
+          {linkedin && (
+            <a href={linkedin} target="_blank" rel="noreferrer">
+              <Button className="flex items-center space-x-2" variant="ghost">
+                <LinkedinIcon className="size-4" />
+                <span>LinkedIn</span>
+              </Button>
+            </a>
+          )}
 
-          {wikipedia && (<a href={wikipedia} target="_blank" rel="noreferrer">
-          <Button className="flex items-center space-x-2" variant="ghost">
-            <WikipediaIcon className="size-4" />
-            <span>Wikipedia</span>
-          </Button>
-          </a>)}
+          {wikipedia && (
+            <a href={wikipedia} target="_blank" rel="noreferrer">
+              <Button className="flex items-center space-x-2" variant="ghost">
+                <WikipediaIcon className="size-4" />
+                <span>Wikipedia</span>
+              </Button>
+            </a>
+          )}
         </div>
       </header>
       <section className="py-8">
@@ -58,18 +66,16 @@ export default function ExpertProfile({
             width="300"
           />
           <div className="flex-1 space-y-4">
-            <h3 className="text-2xl font-semibold">
-              {designation}
-            </h3>
+            <h3 className="text-2xl font-semibold">{designation}</h3>
             {description && <p className="mt-4">{description}</p>}
-            {
-              htmlDescription && <div className="prose mt-4 text-xl" dangerouslySetInnerHTML={{ __html: htmlDescription }} />
-            }
+            {htmlDescription && (
+              <div className="prose mt-4 text-xl" dangerouslySetInnerHTML={{ __html: htmlDescription }} />
+            )}
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }
 
 function LinkedinIcon(props) {
@@ -90,16 +96,12 @@ function LinkedinIcon(props) {
       <rect width="4" height="12" x="2" y="9" />
       <circle cx="4" cy="4" r="2" />
     </svg>
-  )
+  );
 }
 
 function WikipediaIcon(props) {
-  return (<FontAwesomeIcon
-      icon={faWikipediaW}
-      {...props}
-    />)
+  return <FontAwesomeIcon icon={faWikipediaW} {...props} />;
 }
-
 
 function MailIcon(props) {
   return (
@@ -118,9 +120,8 @@ function MailIcon(props) {
       <rect width="20" height="16" x="2" y="4" rx="2" />
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
-  )
+  );
 }
-
 
 function PlusIcon(props) {
   return (
@@ -139,5 +140,5 @@ function PlusIcon(props) {
       <path d="M5 12h14" />
       <path d="M12 5v14" />
     </svg>
-  )
+  );
 }
