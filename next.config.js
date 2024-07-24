@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: process.env.NEXT_IMAGE_DOMAIN.split(','),
+    domains: process.env.NEXT_IMAGE_DOMAIN ? process.env.NEXT_IMAGE_DOMAIN.split(',') : [],
   },
   experimental: {
     scrollRestoration: true,
   }
 }
 
-module.exports = nextConfig
+module.exports = nextConfig;
